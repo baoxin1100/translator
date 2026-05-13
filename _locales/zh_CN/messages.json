@@ -1,0 +1,18 @@
+{
+  "extName": {
+    "message": "划词翻译",
+    "description": "扩展名称"
+  },
+  "extShortName": {
+    "message": "划词翻译",
+    "description": "扩展短名称"
+  },
+  "extDescription": {
+    "message": "划词翻译插件，支持 Google / 百度（通用版 + 大模型版）/ 腾讯交互翻译多引擎，鼠标选中文本即可弹出翻译结果。",
+    "description": "扩展描述"
+  },
+  "actionTitle": {
+    "message": "划词翻译",
+    "description": "工具栏图标 hover 提示"
+  }
+}

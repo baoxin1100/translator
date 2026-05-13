@@ -1,0 +1,18 @@
+{
+  "extName": {
+    "message": "Selection Translator",
+    "description": "Extension name"
+  },
+  "extShortName": {
+    "message": "Translator",
+    "description": "Extension short name (max 12 chars)"
+  },
+  "extDescription": {
+    "message": "A selection-based translator extension supporting Google, Baidu (general + LLM) and Tencent translation engines. Just select text on any page to translate.",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "Selection Translator",
+    "description": "Toolbar icon hover tooltip"
+  }
+}

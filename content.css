@@ -1,0 +1,17 @@
+/* 划词翻译插件样式 */
+#translate-button {
+  transition: all 0.2s ease;
+}
+
+#translate-button:hover {
+  background: #3367d6 !important;
+  transform: scale(1.05);
+}
+
+#translation-popup {
+  transition: all 0.2s ease;
+}
+
+#translation-popup span:hover {
+  color: #333 !important;
+}

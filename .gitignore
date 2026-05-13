@@ -1,0 +1,23 @@
+# 扩展打包产物
+*.zip
+
+# 商店上传素材 / 截图（不纳入版本控制）
+sample_images/
+
+# 生成的 HTML 测试文件
+baidu_doc*.html
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 日志/临时
+*.log
+*.tmp
