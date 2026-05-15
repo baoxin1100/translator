@@ -112,6 +112,7 @@ function createTranslationPopup() {
     display: none;
     font-size: 14px;
     line-height: 1.6;
+    color: #333;
   `;
   
   // 拖动状态
