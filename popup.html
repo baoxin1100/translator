@@ -130,6 +130,117 @@
     .usage-reset:hover {
       color: #d93025;
     }
+    .llm-add-btn {
+      width: 100%;
+      padding: 8px;
+      border: 1px dashed #ccc;
+      border-radius: 4px;
+      background: white;
+      color: #4285f4;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-sizing: border-box;
+    }
+    .llm-add-btn:hover {
+      border-color: #4285f4;
+      background: #f0f5ff;
+    }
+    .llm-item {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+    .llm-item:last-child {
+      margin-bottom: 8px;
+    }
+    .llm-item .llm-name {
+      font-weight: 600;
+      font-size: 13px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    .llm-item .llm-detail {
+      font-size: 11px;
+      color: #999;
+      word-break: break-all;
+    }
+    .llm-item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .llm-item-head .llm-name {
+      font-weight: 600;
+      font-size: 13px;
+      color: #333;
+      margin: 0;
+    }
+    .llm-del-btn {
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .llm-del-btn:hover {
+      color: #d93025;
+    }
+    .llm-edit-input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      font-size: 12px;
+      box-sizing: border-box;
+      margin-bottom: 4px;
+    }
+    .llm-edit-input:focus {
+      outline: none;
+      border-color: #4285f4;
+    }
+    .llm-edit-row {
+      margin-bottom: 6px;
+    }
+    .llm-edit-row:last-child {
+      margin-bottom: 0;
+    }
+    .llm-edit-label {
+      display: block;
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 2px;
+    }
+    .llm-edit-actions {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+    .llm-edit-save, .llm-edit-cancel {
+      padding: 4px 12px;
+      border-radius: 3px;
+      font-size: 12px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      background: white;
+    }
+    .llm-edit-save {
+      background: #4285f4;
+      color: white;
+      border-color: #4285f4;
+    }
+    .llm-edit-save:hover {
+      background: #3367d6;
+    }
+    .llm-edit-cancel:hover {
+      background: #f5f5f5;
+    }
   </style>
 </head>
 <body>
@@ -142,6 +253,7 @@
       <option value="baidu">百度翻译（通用版）</option>
       <option value="baidu_llm">百度翻译（大模型版）</option>
       <option value="tencent">腾讯翻译</option>
+      <option value="custom_llm">自定义 LLM (OpenAI 兼容)</option>
     </select>
   </div>
 
@@ -227,6 +339,21 @@
         <a class="usage-link" href="https://console.cloud.tencent.com/tmt" target="_blank">官方查询</a>
       </div>
       <button class="usage-reset" data-engine="tencent">重置本地统计</button>
+    </div>
+  </div>
+
+  <!-- 自定义 LLM 配置 (OpenAI 兼容) -->
+  <div id="custom_llm-config" class="api-config">
+    <div class="setting-item" style="margin-bottom:12px;">
+      <label class="label" for="selectedLlmId">选择模型</label>
+      <select id="selectedLlmId">
+        <option value="">---</option>
+      </select>
+    </div>
+    <div id="llm-list"></div>
+    <button id="add-llm-btn" class="llm-add-btn">+ 添加模型</button>
+    <div class="hint" style="margin-top:8px;">
+      支持 OpenAI 兼容格式的 API。可添加多个大模型，翻译时使用上方面板选中的模型。
     </div>
   </div>
 

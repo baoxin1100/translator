@@ -10,7 +10,8 @@ let settings = {
   baiduAppKey: '',
   tencentSecretId: '',
   tencentSecretKey: '',
-  tencentRegion: 'ap-beijing'
+  tencentRegion: 'ap-beijing',
+  selectedLlmIndex: ''
 };
 
 // 读取设置
@@ -23,7 +24,8 @@ function loadSettings() {
       baiduAppKey: '',
       tencentSecretId: '',
       tencentSecretKey: '',
-      tencentRegion: 'ap-beijing'
+      tencentRegion: 'ap-beijing',
+      selectedLlmIndex: ''
     }, (result) => {
       settings = result;
     });

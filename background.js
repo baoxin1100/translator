@@ -386,24 +386,96 @@ async function addUsage(engine, chars) {
   });
 }
 
+// 自定义 LLM 翻译 (OpenAI 兼容格式)
+async function translateByCustomLlm(text, settings, customLlmList) {
+  const index = parseInt(settings.selectedLlmIndex);
+  if (isNaN(index) || !customLlmList || index < 0 || index >= customLlmList.length) {
+    return { success: false, error: '请先在设置中添加并选择一个大模型' };
+  }
+  
+  const llm = customLlmList[index];
+  const baseUrl = llm.baseUrl.replace(/\/+$/, '');
+  const url = `${baseUrl}/chat/completions`;
+  
+  // 构建翻译 prompt
+  const langNames = {
+    'zh-CN': '简体中文', 'zh-TW': '繁体中文', 'en': '英语', 'ja': '日语',
+    'ko': '韩语', 'fr': '法语', 'de': '德语', 'es': '西班牙语', 'ru': '俄语',
+    'it': '意大利语', 'pt': '葡萄牙语', 'ar': '阿拉伯语'
+  };
+  const targetLangName = langNames[settings.targetLang] || settings.targetLang;
+  
+  const systemPrompt = `你是一个专业的翻译助手。请将用户提供的文本翻译成${targetLangName}。只返回翻译结果，不要添加任何解释、引号或额外内容。`;
+  
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${llm.apiKey}`
+      },
+      body: JSON.stringify({
+        model: llm.modelName,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: text }
+        ],
+        temperature: 0.3,
+        max_tokens: 4096
+      })
+    });
+    
+    if (!response.ok) {
+      let errorMsg = `HTTP ${response.status}`;
+      try {
+        const errData = await response.json();
+        if (errData.error && errData.error.message) {
+          errorMsg = errData.error.message;
+        }
+      } catch (e) {}
+      return { success: false, error: `大模型 API 错误: ${errorMsg}` };
+    }
+    
+    const data = await response.json();
+    
+    if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+      const result = data.choices[0].message.content.trim();
+      return { success: true, result };
+    }
+    
+    return { success: false, error: '大模型返回结果为空' };
+  } catch (error) {
+    return { success: false, error: `大模型请求失败: ${error.message}` };
+  }
+}
+
 // 统一翻译入口
 async function translate(text, settings) {
   let result;
-  switch (settings.translateEngine) {
-    case 'google':
-      result = await translateByGoogle(text, settings);
-      break;
-    case 'baidu':
-      result = await translateByBaidu(text, settings);
-      break;
-    case 'baidu_llm':
-      result = await translateByBaiduLLM(text, settings);
-      break;
-    case 'tencent':
-      result = await translateByTencent(text, settings);
-      break;
-    default:
-      result = await translateByGoogle(text, settings);
+  
+  if (settings.translateEngine === 'custom_llm') {
+    // 获取自定义 LLM 列表
+    const data = await new Promise((resolve) => {
+      chrome.storage.sync.get({ customLlmList: [] }, resolve);
+    });
+    result = await translateByCustomLlm(text, settings, data.customLlmList);
+  } else {
+    switch (settings.translateEngine) {
+      case 'google':
+        result = await translateByGoogle(text, settings);
+        break;
+      case 'baidu':
+        result = await translateByBaidu(text, settings);
+        break;
+      case 'baidu_llm':
+        result = await translateByBaiduLLM(text, settings);
+        break;
+      case 'tencent':
+        result = await translateByTencent(text, settings);
+        break;
+      default:
+        result = await translateByGoogle(text, settings);
+    }
   }
   
   // 翻译成功后累加用量统计（仅统计计费引擎）
